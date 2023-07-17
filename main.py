@@ -1,26 +1,19 @@
-import tkinter 
 from tkinter import *
+import tkinter as tk
 
-root = tkinter.Tk()
-
-root.geometry("1000x900")
-root.title("Guess the Capital")
-root.config(background="#21243B")
-img1 = PhotoImage(file="Untitled design-PhotoRoom.png-PhotoRoom.png")
+#create object
+master = tk.Tk()
 
 
-labelimage = Label(
-    root,
-    image = img1,
-    background = "#21243B"
-)
-labelimage.pack()
 
-labeltext = Label(
-    root,
-    text = "Guess the Captial",
-    font = ("Arial", 24, "bold")
-)
-labeltext.pack()
-root.mainloop()
+
+#add image file
+bgimg = tk.PhotoImage(file= "image.png")
+
+
+limg= Label(master, i=bgimg)
+limg.pack()
+
+#execute tkinter
+master.mainloop()
 
