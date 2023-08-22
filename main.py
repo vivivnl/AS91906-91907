@@ -1,17 +1,18 @@
 import tkinter as tk
 from tkinter import StringVar
 
-
 #create object
 root = tk.Tk()
 root.title('Guess the Captial')
 root.geometry("1000x1000")
 
-
+#create a list to store user answers
+user_answers = []
 
 def start_page():
-    def question_Page1():
-        #global score
+
+    def question_Page():
+    
         my_text.destroy()
         button1.destroy()
         label1.destroy()
@@ -30,8 +31,7 @@ def start_page():
         
         frame = tk.Frame(root, padx=10, pady=10, bg='#212435')
         question_label = tk.Label(frame, height=5, width=40, bg='#21243B', fg='#fff', font=('Verdana', 35), wraplength=500)
-        question_label.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
-
+        
         frame_option_style = {"width": 300, "height": 150,  "bg": "#21243B", "highlightbackground": "#F2CC0C", "highlightthickness": 2 }
 
         #create frames around each option
@@ -39,7 +39,6 @@ def start_page():
         frame_option2 = tk.Frame(frame, **frame_option_style)
         frame_option3 = tk.Frame(frame, **frame_option_style)
         frame_option4 = tk.Frame(frame, **frame_option_style)
-
 
         #place the frames within the grid
         frame_option1.grid(row=2, column=0, padx=10, pady=30)
@@ -70,19 +69,14 @@ def start_page():
         frame.pack(fill="both", expand="true")
         question_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 
-        
         #positioning the answer buttons
         option1.pack( padx=10, pady=10)
         option2.pack( padx=10, pady=10)
         option3.pack( padx=10, pady=10)
         option4.pack( padx=10, pady=10)
 
-
         #positioning the next button
         button_next.grid(row=4, column=0, columnspan=2, padx=10, pady=20)
-
-        index = 0
-        correct = 0
 
         #create a function to disable answer buttons
         def disableButtons(state):
@@ -92,14 +86,72 @@ def start_page():
             option4['state'] = state 
 
         #create a function to check the selected answer
-        def checkAnswer(button):
+        #the 4th item is the correct answer
+        def checkAnswer(radio):
             global correct, index
 
-            if button['text'] == options[index][4]:
+            user_answer =radio['text']#get the selected answer
+            user_answers.append(user_answer)
+
+            if user_answer == options[index][4]:
                 correct +=1
 
             index +=1
             disableButtons('disable')
+
+        #function to destory end page widgets 
+        def destroy_end_page():
+            end_frame.destroy()
+            button_play_again.destroy()
+            button_quit.destroy()
+            end_image_label.destroy()
+            score_label.destroy()
+            
+
+        #Creating my end page
+        def end_page(score, total_questions):
+            global end_frame, button_play_again, button_quit, end_image_label, score_label
+            frame.destroy()
+
+            #destroy any existing end page widgets
+            if 'end_frame' in globals():
+                destroy_end_page()
+    
+            #create an end page frame
+            end_frame = tk.Frame(root, padx=10, pady=200, bg='#21243B')
+
+            end_image = tk.PhotoImage(file="endpage.png")
+            end_image_label = tk.Label(root, image=end_image)
+            end_image_label.image = end_image  # Keep a reference to the image
+            end_image_label.place(x=0, y=4, relwidth=1, relheight=1)
+
+            score_label = tk.Label(root, text=f" {score}/{total_questions}", fg='#21243B', bg='white', font=('Verdana', 40))
+
+            #pack widgets
+            score_label.pack(pady=300)
+            end_frame.pack(fill="both", expand="true")
+
+         
+            button_play_again = tk.Button(root, text="Play Again", command=restart_quiz, font=('Verdana', 20))
+            button_quit = tk.Button(root, text="Exit", command=root.quit, font=('Verdana', 20), padx=35)
+
+            #place the buttons below score 
+            button_play_again.place(relx=0.5, rely=0.5, anchor="center", y=20)
+            button_quit.place(relx=0.5, rely=0.5, anchor="center", y=60)
+
+        def restart_quiz():
+            global index, correct
+
+            # Destroy end page widgets
+            if 'end_frame' in globals():
+                destroy_end_page()
+
+            #reset variables
+            index=0
+            correct=0
+
+            question_Page()
+
 
         # create a function to display the next question
         def displayNextQuestion():
@@ -112,12 +164,9 @@ def start_page():
                 button_next['text'] = 'Next'     
 
             if index == len(options):
-                question_label['text'] = str(correct) + " / " + str(len(options))
-                button_next['text'] = 'Restart The Quiz'
-                if correct >= len(options)/2:
-                    question_label['bg'] = 'green'
-                else:
-                    question_label['bg'] = 'red'
+                end_page(correct, len(options))
+                return
+             
 
             else:
                 question_label['text'] = questions[index]
@@ -138,12 +187,10 @@ def start_page():
 
         displayNextQuestion()
 
-
-
     #Add start button
-    button1 = tk.Button(root, text="Start", font=('Verdana', 20), padx=50, pady=10, command=question_Page1)
+    button1 = tk.Button(root, text="Start", font=('Verdana', 20), padx=50, pady=10, command=question_Page)
     button1.pack(pady=200)
-    
+                
     
 #define Image
 bg = tk.PhotoImage(file="image.png")
@@ -153,7 +200,7 @@ label1 = tk.Label(root, image=bg)
 label1.place(x=0, y=4, relwidth=1, relheight=1)
 
 #Add something to the top of our image
-my_text = tk.Label(root, text="Guess The Captial", font=("Helvetica", 50), fg="white", bg='#21243B')
+my_text = tk.Label(root, text="Guess The Captial", font=("Verdana", 50), fg="white", bg='#21243B')
 my_text.pack(pady=50)
 
 
@@ -164,4 +211,3 @@ start_page()
 
 #execute tkinter
 root.mainloop()
-
