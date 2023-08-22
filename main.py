@@ -95,6 +95,9 @@ def start_page():
 
             if user_answer == options[index][4]:
                 correct +=1
+                radio.config(bg='green')
+            else:
+                radio.config(bg='red')
 
             index +=1
             disableButtons('disable')
@@ -156,6 +159,12 @@ def start_page():
         # create a function to display the next question
         def displayNextQuestion():
             global index, correct
+
+            #reset colour of all radiobuttons
+            option1.config(bg='#21243B')
+            option2.config(bg='#21243B')
+            option3.config(bg='#21243B')
+            option4.config(bg='#21243B')
 
             if button_next['text'] == 'Restart The Quiz':
                 correct = 0
