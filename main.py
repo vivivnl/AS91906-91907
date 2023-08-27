@@ -46,7 +46,6 @@ def user_input():
     user_answers = tk.Label(root, text="", bg='#21243B')
     user_answers.pack(pady=20)
 
-   
 
 
 def start_page():
@@ -63,7 +62,7 @@ def start_page():
 
     #Add start button
     start_button = tk.Button(root, text="Start", bg="#21243B", font=('Verdana', 20), padx=50, pady=10, command=question_Page)
-    start_button.pack(pady=100)
+    start_button.pack(pady=150)
         
 
 def question_Page():
@@ -252,8 +251,6 @@ def question_Page():
                 button_next['text'] = 'Check the Results'
 
     displayNextQuestion()
-
-
 
 index = 0
 correct = 0
