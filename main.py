@@ -23,11 +23,13 @@ def user_input():
                 user_answers.config(text="")
                 start_page()
             else:
-                user_answers.config(text="Player much be between the age of 10 and 18!")
+                user_answers.config(text="Player must be between the age of 10 and 18!", fg="red", bg="#21243B")
 
         except ValueError:
-            user_answers.config(text="please enter a number!")
-             
+            user_answers.config(text="Please enter a number!", fg="red", bg="#21243B")
+
+
+
     #colour of background
     root.configure(bg='#21243B')
 
@@ -43,6 +45,8 @@ def user_input():
 
     user_answers = tk.Label(root, text="", bg='#21243B')
     user_answers.pack(pady=20)
+
+   
 
 
 def start_page():
