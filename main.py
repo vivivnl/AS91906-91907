@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import StringVar
+import random
 
 #create object
 root = tk.Tk()
@@ -85,6 +86,14 @@ def question_Page():
                 ['Valencia','Seville','Barcelona','Madrid','Madrid'],['Daegu','Busan','Seoul','Incheon','Seoul'],
                 ['Shanghai','Guangzhou','Nanjing','Beijing','Beijing',]]
     
+    #Store correct answers they are arranged in
+    correct_answers = ['Tokyo', 'Paris', 'Madrid', 'Seoul', 'Beijing']
+
+    #Shuffle questions, options ans corret_answers together
+    shuffled_data = list(zip(questions, options, correct_answers))
+    random.shuffle(shuffled_data)
+    questions, options, correct_answers = zip(*shuffled_data)
+
     frame = tk.Frame(root, padx=10, pady=10, bg='#212435')
     question_label = tk.Label(frame, height=5, width=40, bg='#21243B', fg='#fff', font=('Verdana', 35), wraplength=500)
     
@@ -142,14 +151,14 @@ def question_Page():
         option4['state'] = state 
 
     #create a function to check the selected answer
-    #the 4th item is the correct answer
+
     def checkAnswer(radio):
         global correct, index
 
         user_answer =radio['text']#get the selected answer
         user_answers.append(user_answer)
 
-        if user_answer == options[index][4]:
+        if user_answer == correct_answers[index]:
             correct +=1
             radio.config(bg='green')
         else:
